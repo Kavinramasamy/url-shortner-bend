@@ -36,7 +36,7 @@ router.post('/signup', async (req, res) => {
         })
         //Message for mail
         let message = {
-            from: 'abdulwasimsguvi@gmail.com',
+            from: 'kavinguvi01@gmail.com',
             to: req.body.email,
             subject: "URL SHORTENER ACTIVATION LINK",
             text: "https://url-shortener-eight-sigma.vercel.app/activation",
@@ -111,7 +111,7 @@ router.put('/forgetpassword', async (req, res) => {
         })
         //Message for mail
         let message = {
-            from: 'abdulwasimsguvi@gmail.com',
+            from: 'kavinguvi01@gmail.com',
             to: req.body.email,
             subject: "password reset",
             text: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
