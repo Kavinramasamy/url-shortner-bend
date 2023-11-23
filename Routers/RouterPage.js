@@ -1,7 +1,7 @@
 import express from "express";
 import { } from "dotenv/config.js";
 import nodemailer from 'nodemailer';
-// import { generateToken } from "../Helpers/GenerateToken.js";
+import { generateToken } from "../Helpers/GenerateToken.js";
 // import { isAuth } from "../Helpers/isAuth.js";
 import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
 // import { generateShortUrl } from "../Helpers/GenerateURL.js";
@@ -72,30 +72,30 @@ router.put('/activation', async (req, res) => {
     }
 });
 
-// router.post('/login', async (req, res) => {
-//     try {
-//         const user = await UserModel.findOne({ email: req.body.email });
-//         //Checking... user present or not
-//         if (!user) {
-//             return res.status(403).json({ message: "Invalid credential " });
-//         }
-//         const verification = await passwordComparing(req.body.password, user.password);
-//         if (!verification) {
-//             return res.status(403).json({ message: "Invalid credential " });
-//         }
-//         const status = user.status;
-//         if (status === "inactive") {
-//             return res.status(400).json({ message: "Please activate your account...Check your mail for activation link" })
-//         }
-//         //token generating
-//         const token = await generateToken(req.body.email);
-//         res.status(200).json({ message: "login success", token, email: user.email });
+router.post('/login', async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ email: req.body.email });
+        //Checking... user present or not
+        if (!user) {
+            return res.status(403).json({ message: "Invalid credential " });
+        }
+        const verification = await passwordComparing(req.body.password, user.password);
+        if (!verification) {
+            return res.status(403).json({ message: "Invalid credential " });
+        }
+        const status = user.status;
+        if (status === "inactive") {
+            return res.status(400).json({ message: "Please activate your account...Check your mail for activation link" })
+        }
+        //token generating
+        const token = await generateToken(req.body.email);
+        res.status(200).json({ message: "login success", token, email: user.email });
 
-//     } catch (error) {
-//         res.status(500).json({ message: "Unable to login...Try Again later", error });
-//     }
+    } catch (error) {
+        res.status(500).json({ message: "Unable to login...Try Again later", error });
+    }
 
-// });
+});
 
 // router.put('/forgetpassword', async (req, res) => {
 //     try {
