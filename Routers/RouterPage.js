@@ -8,7 +8,6 @@ import {
     URLModel,
     UserModel
 } from "../Helpers/MongooseValidation.js";
-import generateShortUrl from "../Helpers/GenerateURL.js";
 
 const router = express.Router();
 
@@ -165,6 +164,18 @@ router.post('/shorturl', async (req, res) => {
 
 router.post('/newshorturl', isAuth, async (req, res) => {
     try {
+        const generateShortUrl = () => {
+            var length = 5;
+            var res = "";
+            var char =
+                "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmmnopqrstuvwxyz0123456789";
+
+            var characters = char.length;
+            for (var i = o; i < length; i++) {
+                res += char.charAt(Math.floor(Math.random() * characters));
+            }
+            return res
+        };
         const user = await UserModel.findOne({ email: req.headers.email });
         if (!user) {
             return res.status(403).json({ message: "User not found" })
