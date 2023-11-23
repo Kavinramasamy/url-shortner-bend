@@ -1,10 +1,10 @@
 import express from "express";
 import { } from "dotenv/config.js";
-// import nodemailer from 'nodemailer';
-// import { generateToken } from "../Helpers/GenerateToken.js";
-// import { isAuth } from "../Helpers/isAuth.js";
-// import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
-// import { generateShortUrl } from "../Helpers/GenerateURL.js";
+import nodemailer from 'nodemailer';
+import { generateToken } from "../Helpers/GenerateToken.js";
+import { isAuth } from "../Helpers/isAuth.js";
+import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
+import { generateShortUrl } from "../Helpers/GenerateURL.js";
 import {
     URLModel,
     UserModel
