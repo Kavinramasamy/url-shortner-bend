@@ -7,7 +7,7 @@ import nodemailer from 'nodemailer';
 // import { generateShortUrl } from "../Helpers/GenerateURL.js";
 import {
     URLModel,
-    UserModel
+    // UserModel
 } from "../Helpers/mongooseValidation.js";
 
 const router = express.Router();
