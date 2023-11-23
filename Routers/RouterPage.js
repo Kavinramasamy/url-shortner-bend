@@ -13,43 +13,46 @@ router.get("/", async (req, res) => {
     res.status(200).json({ message: "URL shortener app" })
 })
 //Creating new account for the user....
-// router.post('/signup', async (req, res) => {
-//     try {
-//         const user = await UserModel.findOne({ email: req.body.email });
-//         //Checking... user present or not
-//         if (user) {
-//             return res.status(403).json({ message: "User already exists" });
-//         }
-//         const hashedPassword = await passwordHashing(req.body.password);
-//         const newUser = await UserModel({
-//             userName: req.body.userName,
-//             email: req.body.email,
-//             password: hashedPassword
-//         }).save();
-//         //Mail transporter
-//         let transporter = nodemailer.createTransport({
-//             service: "gmail",
-//             auth: {
-//                 user: process.env.USER,
-//                 pass: process.env.PASS
-//             }
-//         })
-//         //Message for mail
-//         let message = {
-//             from: 'kavinguvi01@gmail.com',
-//             to: req.body.email,
-//             subject: "URL SHORTENER ACTIVATION LINK",
-//             text: "https://url-shortener-eight-sigma.vercel.app/activation",
-//             html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortener-eight-sigma.vercel.app/activation</b>",
 
-//         }
-//         //Sending activation link mail
-//         let sendMail = await transporter.sendMail(message);
-//         res.status(200).json({ message: "Check your mail for activation link", newUser });
-//     } catch (error) {
-//         res.status(500).json({ message: "Unable to signup", error })
-//     }
-// });
+router.post('/signup', async (req, res) => {
+    try {
+        const user = await UserModel.findOne({ email: req.body.email });
+        //Checking... user present or not
+        if (user) {
+            return res.status(403).json({ message: "User already exists" });
+        }
+        const hashedPassword = await passwordHashing(req.body.password);
+        const newUser = await UserModel({
+            userName: req.body.userName,
+            email: req.body.email,
+            password: hashedPassword
+        }).save();
+
+        //Mail transporter
+        let transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+                user: process.env.USER,
+                pass: process.env.PASS
+            }
+        })
+        //Message for mail
+
+        let message = {
+            from: 'kavinguvi01@gmail.com',
+            to: req.body.email,
+            subject: "URL SHORTENER ACTIVATION LINK",
+            text: "https://url-shortener-eight-sigma.vercel.app/activation",
+            html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortener-eight-sigma.vercel.app/activation</b>",
+
+        }
+        //Sending activation link mail
+        let sendMail = await transporter.sendMail(message);
+        res.status(200).json({ message: "Check your mail for activation link", newUser });
+    } catch (error) {
+        res.status(500).json({ message: "Unable to signup", error })
+    }
+});
 
 // router.put('/activation', async (req, res) => {
 //     try {
