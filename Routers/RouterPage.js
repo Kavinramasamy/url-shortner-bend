@@ -129,85 +129,90 @@ router.put('/forgetpassword', async (req, res) => {
 });
 
 
-router.put('/resetpassword', isAuth, async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.headers.email });
-        //Checking... user present or not
-        if (!user) {
-            return res.status(403).json({ message: "No user found" });
-        }
-        const hashedPassword = await passwordHashing(req.body.password);
-        const updatedUser = await UserModel.updateOne({ email: req.headers.email }, { $set: { password: hashedPassword } });
-        res.status(200).json({ message: "password updated" })
-    } catch (error) {
-        res.status(500).json({ message: "Unable to updated password...Try Again later" });
-    }
-});
+// router.put('/resetpassword', isAuth, async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.headers.email });
 
-router.post('/shorturl', async (req, res) => {
-    const shortUrls = await URLModel.find({ email: req.headers.email });
-    if (shortUrls.length === 0) {
-        return res.status(403).json({ message: "No URL found" })
-    }
-    res.status(200).json({ message: "shorturls", shortUrls });
-});
+//Checking... user present or not
+
+//         if (!user) {
+//             return res.status(403).json({ message: "No user found" });
+//         }
+//         const hashedPassword = await passwordHashing(req.body.password);
+//         const updatedUser = await UserModel.updateOne({ email: req.headers.email }, { $set: { password: hashedPassword } });
+//         res.status(200).json({ message: "password updated" })
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to updated password...Try Again later" });
+//     }
+// });
+
+// router.post('/shorturl', async (req, res) => {
+//     const shortUrls = await URLModel.find({ email: req.headers.email });
+//     if (shortUrls.length === 0) {
+//         return res.status(403).json({ message: "No URL found" })
+//     }
+//     res.status(200).json({ message: "shorturls", shortUrls });
+// });
 
 
 //Creating new Short URL....
-router.post('/newshorturl', isAuth, async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.headers.email });
-        if (!user) {
-            return res.status(403).json({ message: "User not found" })
-        }
-        const status = user.status;
-        if (status === "inactive") {
-            return res.status(400).json({ message: "Please activate your account" })
-        }
 
-        let newUrl = await URLModel({
-            email: req.headers.email,
-            short_url: await generateShortUrl(),
-            long_url: req.body.long_url,
-            urlName: req.body.urlName
-        }).save();
+// router.post('/newshorturl', isAuth, async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.headers.email });
+//         if (!user) {
+//             return res.status(403).json({ message: "User not found" })
+//         }
+//         const status = user.status;
+//         if (status === "inactive") {
+//             return res.status(400).json({ message: "Please activate your account" })
+//         }
 
-        res.status(200).json({ message: "success", newUrl });
-    } catch (error) {
-        res.status(500).json({ message: "Unable to create ShortURL...Try again", error })
-    }
-});
+//         let newUrl = await URLModel({
+//             email: req.headers.email,
+//             short_url: await generateShortUrl(),
+//             long_url: req.body.long_url,
+//             urlName: req.body.urlName
+//         }).save();
+
+//         res.status(200).json({ message: "success", newUrl });
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to create ShortURL...Try again", error })
+//     }
+// });
 
 //Deleting the url....
-router.delete('/:url', isAuth, async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ short_url: req.params.url });
-        if (!user) {
-            return res.status(403).json({ message: "URL not found" })
-        }
-        let urlToDelete = await URLModel.deleteOne({ short_url: req.params.url })
 
-        res.status(200).json({ message: "deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Unable to delete ShortURL...Try again", error })
-        console.log(error);
-    }
-});
+// router.delete('/:url', isAuth, async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ short_url: req.params.url });
+//         if (!user) {
+//             return res.status(403).json({ message: "URL not found" })
+//         }
+//         let urlToDelete = await URLModel.deleteOne({ short_url: req.params.url })
+
+//         res.status(200).json({ message: "deleted successfully" });
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to delete ShortURL...Try again", error })
+//         console.log(error);
+//     }
+// });
 
 //Redirecting the link to original page
-router.get('/:url', async (req, res) => {
-    try {
-        const urlData = await URLModel.findOne({ short_url: req.params.url });
-        if (!urlData) {
-            return res.status(403).json({ message: "URL not found" })
-        }
-        const currentCount = +urlData.click_count + 1;
-        const updatecount = await URLModel.updateOne({ short_url: req.params.url }, { $set: { "click_count": currentCount } })
-        res.redirect(urlData.long_url);
-    } catch (error) {
-        res.status(500).json({ message: "Unable to find ShortURL...Try again", error })
-        console.log(error);
-    }
-});
+
+// router.get('/:url', async (req, res) => {
+//     try {
+//         const urlData = await URLModel.findOne({ short_url: req.params.url });
+//         if (!urlData) {
+//             return res.status(403).json({ message: "URL not found" })
+//         }
+//         const currentCount = +urlData.click_count + 1;
+//         const updatecount = await URLModel.updateOne({ short_url: req.params.url }, { $set: { "click_count": currentCount } })
+//         res.redirect(urlData.long_url);
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to find ShortURL...Try again", error })
+//         console.log(error);
+//     }
+// });
 
 export const RouterPage = router;
