@@ -1,4 +1,4 @@
-export async function generateShortUrl() {
+const generateShortUrl = () => {
     var length = 5;
     var res = "";
     var char =
@@ -10,3 +10,5 @@ export async function generateShortUrl() {
     }
     return res
 };
+
+export default generateShortUrl;

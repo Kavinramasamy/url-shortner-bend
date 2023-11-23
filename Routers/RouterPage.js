@@ -4,11 +4,11 @@ import nodemailer from 'nodemailer';
 import { generateToken } from "../Helpers/GenerateToken.js";
 import { isAuth } from "../Helpers/isAuth.js";
 import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
-// import { generateShortUrl } from "../Helpers/GenerateURL.js";
 import {
     URLModel,
     UserModel
 } from "../Helpers/MongooseValidation.js";
+import generateShortUrl from "../Helpers/GenerateURL.js";
 
 const router = express.Router();
 
@@ -176,7 +176,7 @@ router.post('/newshorturl', isAuth, async (req, res) => {
 
         let newUrl = await URLModel({
             email: req.headers.email,
-            short_url: await generateShortUrl(),
+            short_url: generateShortUrl(),
             long_url: req.body.long_url,
             urlName: req.body.urlName
         }).save();
