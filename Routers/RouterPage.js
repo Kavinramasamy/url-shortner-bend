@@ -1,11 +1,11 @@
 import express from "express";
 import { } from "dotenv/config.js";
-import nodemailer from 'nodemailer';
-import { generateToken } from "../Helpers/GenerateToken.js";
-import { isAuth } from "../Helpers/isAuth.js";
-import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
-import { generateShortUrl } from "../Helpers/GenerateURL.js";
-import { URLModel, UserModel } from "../Helpers/mongooseValidation.js";
+// import nodemailer from 'nodemailer';
+// import { generateToken } from "../Helpers/GenerateToken.js";
+// import { isAuth } from "../Helpers/isAuth.js";
+// import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
+// import { generateShortUrl } from "../Helpers/GenerateURL.js";
+// import { URLModel, UserModel } from "../Helpers/mongooseValidation.js";
 
 const router = express.Router();
 
@@ -13,120 +13,120 @@ router.get("/", async (req, res) => {
     res.status(200).json({ message: "URL shortener app" })
 })
 //Creating new account for the user....
-router.post('/signup', async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.body.email });
-        //Checking... user present or not
-        if (user) {
-            return res.status(403).json({ message: "User already exists" });
-        }
-        const hashedPassword = await passwordHashing(req.body.password);
-        const newUser = await UserModel({
-            userName: req.body.userName,
-            email: req.body.email,
-            password: hashedPassword
-        }).save();
-        //Mail transporter
-        let transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.USER,
-                pass: process.env.PASS
-            }
-        })
-        //Message for mail
-        let message = {
-            from: 'kavinguvi01@gmail.com',
-            to: req.body.email,
-            subject: "URL SHORTENER ACTIVATION LINK",
-            text: "https://url-shortener-eight-sigma.vercel.app/activation",
-            html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortener-eight-sigma.vercel.app/activation</b>",
+// router.post('/signup', async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.body.email });
+//         //Checking... user present or not
+//         if (user) {
+//             return res.status(403).json({ message: "User already exists" });
+//         }
+//         const hashedPassword = await passwordHashing(req.body.password);
+//         const newUser = await UserModel({
+//             userName: req.body.userName,
+//             email: req.body.email,
+//             password: hashedPassword
+//         }).save();
+//         //Mail transporter
+//         let transporter = nodemailer.createTransport({
+//             service: "gmail",
+//             auth: {
+//                 user: process.env.USER,
+//                 pass: process.env.PASS
+//             }
+//         })
+//         //Message for mail
+//         let message = {
+//             from: 'kavinguvi01@gmail.com',
+//             to: req.body.email,
+//             subject: "URL SHORTENER ACTIVATION LINK",
+//             text: "https://url-shortener-eight-sigma.vercel.app/activation",
+//             html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortener-eight-sigma.vercel.app/activation</b>",
 
-        }
-        //Sending activation link mail
-        let sendMail = await transporter.sendMail(message);
-        res.status(200).json({ message: "Check your mail for activation link", newUser });
-    } catch (error) {
-        res.status(500).json({ message: "Unable to signup", error })
-    }
-});
+//         }
+//         //Sending activation link mail
+//         let sendMail = await transporter.sendMail(message);
+//         res.status(200).json({ message: "Check your mail for activation link", newUser });
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to signup", error })
+//     }
+// });
 
-router.put('/activation', async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.body.email });
+// router.put('/activation', async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.body.email });
 
-        //Checking... user present or not
-        if (!user) {
-            return res.status(403).json({ message: "No user found" });
-        }
-        const updatedUser = await UserModel.updateOne({ email: req.body.email }, { $set: { status: "active" } });
-        res.status(200).json({ message: "Account activated" })
-    } catch (error) {
-        res.status(500).json({ message: "Unable to activate your account...Try Again later", error });
-    }
-});
+//         //Checking... user present or not
+//         if (!user) {
+//             return res.status(403).json({ message: "No user found" });
+//         }
+//         const updatedUser = await UserModel.updateOne({ email: req.body.email }, { $set: { status: "active" } });
+//         res.status(200).json({ message: "Account activated" })
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to activate your account...Try Again later", error });
+//     }
+// });
 
-router.post('/login', async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.body.email });
-        //Checking... user present or not
-        if (!user) {
-            return res.status(403).json({ message: "Invalid credential " });
-        }
-        const verification = await passwordComparing(req.body.password, user.password);
-        if (!verification) {
-            return res.status(403).json({ message: "Invalid credential " });
-        }
-        const status = user.status;
-        if (status === "inactive") {
-            return res.status(400).json({ message: "Please activate your account...Check your mail for activation link" })
-        }
-        //token generating
-        const token = await generateToken(req.body.email);
-        res.status(200).json({ message: "login success", token, email: user.email });
+// router.post('/login', async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.body.email });
+//         //Checking... user present or not
+//         if (!user) {
+//             return res.status(403).json({ message: "Invalid credential " });
+//         }
+//         const verification = await passwordComparing(req.body.password, user.password);
+//         if (!verification) {
+//             return res.status(403).json({ message: "Invalid credential " });
+//         }
+//         const status = user.status;
+//         if (status === "inactive") {
+//             return res.status(400).json({ message: "Please activate your account...Check your mail for activation link" })
+//         }
+//         //token generating
+//         const token = await generateToken(req.body.email);
+//         res.status(200).json({ message: "login success", token, email: user.email });
 
-    } catch (error) {
-        res.status(500).json({ message: "Unable to login...Try Again later", error });
-    }
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to login...Try Again later", error });
+//     }
 
-});
+// });
 
-router.put('/forgetpassword', async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.body.email });
-        //Checking... user present or not
-        if (!user) {
-            return res.status(403).json({ message: "No user found" });
-        }
-        //token generating
-        const token = await generateToken(req.body.email);
+// router.put('/forgetpassword', async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.body.email });
+//         //Checking... user present or not
+//         if (!user) {
+//             return res.status(403).json({ message: "No user found" });
+//         }
+//         //token generating
+//         const token = await generateToken(req.body.email);
 
-        //Mail transporter
-        let transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-                user: process.env.USER,
-                pass: process.env.PASS
-            }
-        })
-        //Message for mail
-        let message = {
-            from: 'kavinguvi01@gmail.com',
-            to: req.body.email,
-            subject: "password reset",
-            text: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
-            html: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
+//         //Mail transporter
+//         let transporter = nodemailer.createTransport({
+//             service: "gmail",
+//             auth: {
+//                 user: process.env.USER,
+//                 pass: process.env.PASS
+//             }
+//         })
+//         //Message for mail
+//         let message = {
+//             from: 'kavinguvi01@gmail.com',
+//             to: req.body.email,
+//             subject: "password reset",
+//             text: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
+//             html: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
 
-        }
-        //Sending password reset link mail
-        let sendMail = await transporter.sendMail(message);
+//         }
+//         //Sending password reset link mail
+//         let sendMail = await transporter.sendMail(message);
 
-        res.status(200).json({ message: "Check you mail for reset link success", token, email: user.email });
+//         res.status(200).json({ message: "Check you mail for reset link success", token, email: user.email });
 
-    } catch (error) {
-        res.status(500).json({ message: "Unable to login...Try Again later", error });
-    }
-});
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to login...Try Again later", error });
+//     }
+// });
 
 
 // router.put('/resetpassword', isAuth, async (req, res) => {
