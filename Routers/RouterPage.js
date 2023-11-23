@@ -1,6 +1,6 @@
 import express from "express";
 import { } from "dotenv/config.js";
-// import nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';
 // import { generateToken } from "../Helpers/GenerateToken.js";
 // import { isAuth } from "../Helpers/isAuth.js";
 // import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
@@ -57,20 +57,20 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.put('/activation', async (req, res) => {
-    try {
-        const user = await UserModel.findOne({ email: req.body.email });
+// router.put('/activation', async (req, res) => {
+//     try {
+//         const user = await UserModel.findOne({ email: req.body.email });
 
-        //Checking... user present or not
-        if (!user) {
-            return res.status(403).json({ message: "No user found" });
-        }
-        const updatedUser = await UserModel.updateOne({ email: req.body.email }, { $set: { status: "active" } });
-        res.status(200).json({ message: "Account activated" })
-    } catch (error) {
-        res.status(500).json({ message: "Unable to activate your account...Try Again later", error });
-    }
-});
+//         //Checking... user present or not
+//         if (!user) {
+//             return res.status(403).json({ message: "No user found" });
+//         }
+//         const updatedUser = await UserModel.updateOne({ email: req.body.email }, { $set: { status: "active" } });
+//         res.status(200).json({ message: "Account activated" })
+//     } catch (error) {
+//         res.status(500).json({ message: "Unable to activate your account...Try Again later", error });
+//     }
+// });
 
 // router.post('/login', async (req, res) => {
 //     try {
