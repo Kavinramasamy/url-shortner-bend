@@ -6,9 +6,9 @@ import nodemailer from 'nodemailer';
 // import { passwordComparing, passwordHashing } from "../Helpers/Hashing.js";
 // import { generateShortUrl } from "../Helpers/GenerateURL.js";
 import {
-    URLModel,
-    // UserModel
-} from "../Helpers/mongooseValidation.js";
+    // URLModel,
+    UserModel
+} from "../Helpers/MongooseValidation.js";
 
 const router = express.Router();
 
