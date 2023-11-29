@@ -44,8 +44,8 @@ router.post('/signup', async (req, res) => {
             from: 'kavinguvi01@gmail.com',
             to: req.body.email,
             subject: "URL SHORTENER ACTIVATION LINK",
-            text: "https://url-shortener-eight-sigma.vercel.app/activation",
-            html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortener-eight-sigma.vercel.app/activation</b>",
+            text: "https://url-shortner-one-theta.vercel.app/activation",
+            html: "<p>Click the below link to activate your account</P><br/><b>https://url-shortner-one-theta.vercel.app/activation</b>",
 
         }
         //Sending activation link mail
@@ -119,8 +119,8 @@ router.put('/forgetpassword', async (req, res) => {
             from: 'kavinguvi01@gmail.com',
             to: req.body.email,
             subject: "password reset",
-            text: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
-            html: "<p>Click the below link to reset password</p><br/><b>https://url-shortener-eight-sigma.vercel.app/resetpassword</b>",
+            text: "<p>Click the below link to reset password</p><br/><bhttps://url-shortner-one-theta.vercel.app/resetpassword</b>",
+            html: "<p>Click the below link to reset password</p><br/><b>https://url-shortner-one-theta.vercel.app/resetpassword</b>",
 
         }
         //Sending password reset link mail
